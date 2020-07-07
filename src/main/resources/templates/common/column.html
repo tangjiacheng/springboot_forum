@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<nav class="fly-panel fly-column" th:fragment="column">
+  <div class="layui-container">
+    <ul class="layui-clear">
+      <li><a href="/">首页</a></li>
+      <li><a href="/post/type/提问">提问</a></li>
+      <li><a href="/post/type/分享">分享<!--<span class="layui-badge-dot"></span>--></a></li>
+      <li><a href="/post/type/讨论">讨论</a></li>
+      <li><a href="/post/type/建议">建议</a></li>
+      <li><a href="/post/type/公告">公告</a></li>
+      <li><a href="/post/type/动态">动态</a></li>
+      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
+
+      <!-- 用户登入后显示 -->
+      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/user/index" th:text="我发表的贴"></a></li>
+    </ul>
+
+    <div class="fly-column-right layui-hide-xs">
+      <span class="fly-search"><i class="layui-icon"></i></span>
+      <a href="/post/toAdd" class="layui-btn">发表新帖</a>
+    </div>
+    <div class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
+      <a href="/post/toAdd" class="layui-btn">发表新帖</a>
+    </div>
+  </div>
+</nav>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/layui/layui.all.js}"></script>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!--正在热议-->
+<dl class="fly-panel fly-list-one" th:fragment="hotPost">
+  <dt class="fly-panel-title">正在热议</dt>
+  <dd th:each="hotPost:${session.hotPostList}">
+    <a th:href="'/post/detail/' + ${hotPost.getId()}">[[${hotPost.getTitle()}]]</a>
+    <span><i class="iconfont icon-pinglun1"></i> [[${hotPost.getReply()}]]</span>
+  </dd>
+
+  <!-- 无数据时 -->
+  <!--
+  <div class="fly-none">没有相关数据</div>
+  -->
+</dl>
+
+<div class="fly-panel" th:fragment="advertise">
+  <div class="fly-panel-title">
+    强烈推荐
+  </div>
+  <div class="fly-panel-main">
+    <a href="https://github.com/tangjiacheng" target="_blank" class="fly-zanzhu"
+       time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">My github</a>
+  </div>
+</div>

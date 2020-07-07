@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tjc.mapper.CommentMapper">
+
+    <resultMap id="commentUserMap" type="Comment">
+        <id property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="createTime" column="createTime"/>
+        <result property="content" column="content"/>
+        <result property="isAdopt" column="isAdopt"/>
+
+        <association property="user" column="userId" javaType="User" select="com.tjc.mapper.UserMapper.findUserById"/>
+    </resultMap>
+
+    <resultMap id="commentPostMap" type="Comment">
+        <id property="id" column="id"/>
+        <result property="postId" column="postId"/>
+        <result property="content" column="content"/>
+        <result property="createTime" column="createTime"/>
+        <result property="content" column="content"/>
+        <result property="isAdopt" column="isAdopt"/>
+
+        <association property="post" column="postId" javaType="Post" select="com.tjc.mapper.PostMapper.findPostById"/>
+    </resultMap>
+
+    <insert id="addComment" parameterType="Comment">
+        insert into comment(userId, postId, content, createTime) values (#{userId}, #{postId}, #{content}, #{createTime})
+    </insert>
+
+    <select id="findCommentByPostId" resultMap="commentUserMap">
+        select * from comment where postId=#{postId}
+    </select>
+
+    <select id="findCommentByUserId" resultMap="commentPostMap">
+        select * from comment where userId=#{userId} order by createTime desc limit 0, 5
+    </select>
+
+    <select id="findCommentCountByPostId" resultType="Integer">
+        select count(*) from comment where postId=#{postId}
+    </select>
+
+    <delete id="deleteCommentByPostId">
+        delete from comment where postId=#{postId}
+    </delete>
+
+    <select id="findCommentById" resultMap="commentPostMap">
+        select * from comment where id=#{id}
+    </select>
+
+    <update id="adoptComment">
+        update comment set isAdopt=true where id=#{id}
+    </update>
+
+    <delete id="deleteComment">
+        delete from comment where id=#{id}
+    </delete>
+</mapper>

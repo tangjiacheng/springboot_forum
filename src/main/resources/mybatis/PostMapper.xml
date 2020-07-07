@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tjc.mapper.PostMapper">
+
+    <resultMap id="postMap" type="Post">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="type" column="type"/>
+        <result property="content" column="content"/>
+        <result property="isUp" column="isUp"/>
+        <result property="isGood" column="isGood"/>
+        <result property="isEnd" column="isEnd"/>
+        <result property="coin" column="coin"/>
+        <result property="adoptId" column="adoptId"/>
+
+        <association property="user" column="userId" javaType="User" select="com.tjc.mapper.UserMapper.findUserById"/>
+    </resultMap>
+
+    <insert id="addPost" parameterType="Post">
+        <selectKey keyColumn="id" keyProperty="id" resultType="Integer">
+            select last_insert_id()
+        </selectKey>
+        insert into post(userId, title, type, content, coin, createTime) values (#{userId}, #{title}, #{type}, #{content}, #{coin}, #{createTime})
+    </insert>
+
+    <select id="findAllPostByTime" resultMap="postMap">
+        select * from post order by createTime desc
+    </select>
+
+    <select id="findAllPostByReply" resultMap="postMap">
+        select * from post order by reply desc
+    </select>
+
+    <select id="findUpPostByTime" resultMap="postMap">
+        select * from post where isUp=true order by createTime desc
+    </select>
+
+    <select id="findPostByUserId" resultMap="postMap">
+        select * from post where userId=#{userId} order by createTime desc
+    </select>
+
+    <select id="findAllPostByType" resultMap="postMap">
+        select * from post where type=#{type}
+    </select>
+
+    <select id="findPostById" resultMap="postMap">
+        select * from post where id=#{id}
+    </select>
+
+    <select id="findHotPostByCommentNum" resultMap="postMap">
+        select * from post where reply>5 order by reply desc limit 0, 5
+    </select>
+
+    <update id="updatePostReply" parameterType="Post">
+        update post set reply=#{reply} where id=#{id}
+    </update>
+
+    <delete id="deletePostById">
+        delete from post where id=#{id}
+    </delete>
+
+    <update id="setPostUp">
+        update post set isUp=true where id=#{id}
+    </update>
+
+    <update id="unSetPostUp">
+        update post set isUp=false where id=#{id}
+    </update>
+
+    <update id="setPostGood">
+        update post set isGood=true where id=#{id}
+    </update>
+
+    <update id="unSetPostGood">
+        update post set isGood=false where id=#{id}
+    </update>
+
+    <update id="adoptComment">
+        update post set adoptId=#{commentId} where id=#{postId}
+    </update>
+
+    <update id="removeAdoptComment">
+        update post set adoptId=null where id=#{id}
+    </update>
+</mapper>

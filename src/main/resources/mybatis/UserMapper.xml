@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tjc.mapper.UserMapper">
+
+    <resultMap id="userRoleMap" type="User">
+        <id property="id" column="id"/>
+        <result property="email" column="email"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="sex" column="sex"/>
+        <result property="coin" column="coin"/>
+        <result property="createTime" column="createTime"/>
+        <result property="location" column="location"/>
+        <result property="introduction" column="introduction"/>
+        <result property="level" column="level"/>
+        <result property="avatar" column="avatar"/>
+        <result property="qq" column="qq"/>
+        <result property="weibo" column="weibo"/>
+        <result property="replyNum" column="replyNum"/>
+
+        <collection property="roles" column="id" javaType="java.util.List" select="com.tjc.mapper.RoleMapper.findRoleByUserId"/>
+    </resultMap>
+
+    <insert id="addUser" parameterType="User">
+        <selectKey keyColumn="id" keyProperty="id" resultType="Integer">
+            select last_insert_id()
+        </selectKey>
+        insert into user(email, username, password, createTime, location, sex) values (#{email}, #{username}, #{password}, #{createTime}, #{location}, #{sex})
+    </insert>
+
+    <select id="findUserByEmail" resultMap="userRoleMap">
+        select * from user where email=#{email}
+    </select>
+
+    <select id="findUserById" resultType="User">
+        select * from user where id=#{id}
+    </select>
+
+    <update id="updateUser" parameterType="User">
+        update user set email=#{email}, username=#{username}, sex=#{sex}, location=#{location}, introduction=#{introduction} where id=#{id}
+    </update>
+
+    <update id="updateUserReply" parameterType="User">
+        update user set replyNum=#{replyNum} where id=#{id}
+    </update>
+
+    <select id="findHotUserByReply" resultType="User">
+        select * from user where replyNum>5 order by replyNum limit 0, 6
+    </select>
+
+    <select id="findUserByUsername" resultMap="userRoleMap">
+        select * from user where username=#{username}
+    </select>
+
+    <update id="updatePassword">
+        update user set password=#{password} where id=#{id}
+    </update>
+
+    <update id="updateUserAvatar">
+        update user set avatar=#{filePath} where id=#{id}
+    </update>
+
+    <update id="updateCoin">
+        update user set coin=#{newCoin} where id=#{id}
+    </update>
+
+    <select id="findFanByUserId" resultType="User">
+        select * from user where id in (select fanUserId from relation where followUserId=#{id})
+    </select>
+
+    <select id="findFollowByUserId" resultType="User">
+        select * from user where id in (select followUserId from relation where fanUserId=#{id})
+    </select>
+</mapper>

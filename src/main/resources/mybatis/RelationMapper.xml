@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tjc.mapper.RelationMapper">
+
+    <select id="findRelation" resultType="Relation">
+        select * from relation where fanUserId=#{fanUserId} and followUserId=#{followUserId}
+    </select>
+
+    <insert id="addRelation">
+        insert into relation(fanUserId, followUserId) VALUES (#{fanUserId}, #{followUserId})
+    </insert>
+
+    <delete id="removeRelation">
+        delete from relation where fanUserId=#{fanUserId} and followUserId=#{followUserId}
+    </delete>
+</mapper>
