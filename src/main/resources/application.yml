@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: root
-    password: 12345
+    password: 123456
     url: jdbc:mysql://113.54.154.99:3306/fly_forum?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&characterEncoding=utf8
     type: com.alibaba.druid.pool.DruidDataSource
 
